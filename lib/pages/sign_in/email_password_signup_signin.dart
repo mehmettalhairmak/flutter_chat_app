@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_chat_app/models/user_model.dart';
 import 'package:flutter_chat_app/pages/sign_in/error_exception.dart';
 import 'package:flutter_chat_app/viewmodel/user_view_model.dart';
+import 'package:flutter_chat_app/widgets/cross_platform_notification.dart';
 import 'package:flutter_chat_app/widgets/social_login_button.dart';
 import 'package:provider/provider.dart';
 
@@ -115,8 +116,14 @@ class _EmailPasswordLoginPageState extends State<EmailPasswordLoginPage> {
         if (_currentUser != null) {
           debugPrint('Oturum Açan User ID : ${_currentUser.userID.toString()}');
         }
-      } on PlatformException catch (e) {
+      } on FirebaseAuthException catch (e) {
         debugPrint("Widget Oturum Açma Hata Yakalandı ${e.code.toString()}");
+
+        CrossPlatformAlertDialog(
+          title: "Oturum Açma Hata",
+          content: Errors.showError(e.code),
+          mainButtonTitle: "Tamam",
+        ).show(context);
       }
     } else {
       try {
@@ -128,6 +135,11 @@ class _EmailPasswordLoginPageState extends State<EmailPasswordLoginPage> {
       } on FirebaseAuthException catch (e) {
         debugPrint(
             "Widget Hesap Oluşturma Hata Yakalandı ${Errors.showError(e.code)}");
+        CrossPlatformAlertDialog(
+          title: "Kullanıcı Oluşturma Hata",
+          content: Errors.showError(e.code),
+          mainButtonTitle: "Tamam",
+        ).show(context);
       }
     }
   }

@@ -112,9 +112,6 @@ class UserViewModel with ChangeNotifier implements AuthBase {
       } else {
         return null;
       }
-    } catch (e) {
-      debugPrint("ViewModel signInEmailPassword Hata : ${e.toString()}");
-      return null;
     } finally {
       viewState = ViewState.IDLE;
     }
