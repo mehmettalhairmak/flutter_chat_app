@@ -1,5 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/locator.dart';
 import 'package:flutter_chat_app/models/user_model.dart';
@@ -162,5 +164,12 @@ class UserViewModel with ChangeNotifier implements AuthBase {
       user!.userName = newUserName;
     }
     return result;
+  }
+
+  Future<String> uploadFile(
+      String userID, String fileType, File? profilePhoto) async {
+    var downloadURL =
+        await _userRepository.uploadFile(userID, fileType, profilePhoto);
+    return downloadURL;
   }
 }

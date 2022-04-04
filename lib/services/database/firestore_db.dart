@@ -40,7 +40,7 @@ class FirestoreDBService implements DBBase {
         .where("userName", isEqualTo: newUserName)
         .get();
 
-    if (users.docs.length >= 1) {
+    if (users.docs.isNotEmpty) {
       return false;
     } else {
       await _firestore
@@ -49,5 +49,13 @@ class FirestoreDBService implements DBBase {
           .update({"userName": newUserName});
       return true;
     }
+  }
+
+  Future<bool> updatePhotoURL(String userID, String profilePhotoURL) async {
+    await _firestore
+        .collection("users")
+        .doc(userID)
+        .update({"profileURL": profilePhotoURL});
+    return true;
   }
 }

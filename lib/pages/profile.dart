@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/viewmodel/user_view_model.dart';
 import 'package:flutter_chat_app/widgets/cross_platform_notification.dart';
 import 'package:flutter_chat_app/widgets/social_login_button.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -13,10 +16,14 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late TextEditingController _controllerUserName;
+  late ImagePicker _picker;
+  XFile? _profilePhoto;
+
   @override
   void initState() {
     super.initState();
     _controllerUserName = TextEditingController();
+    _picker = ImagePicker();
   }
 
   @override
@@ -53,8 +60,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: CircleAvatar(
                     backgroundColor: Colors.black,
                     radius: 75,
-                    backgroundImage:
-                        NetworkImage(_userViewModel.user!.profileURL!),
+                    backgroundImage: _profilePhoto == null
+                        ? NetworkImage(_userViewModel.user!.profileURL!)
+                        : FileImage(File(_profilePhoto!.path)) as ImageProvider,
                   ),
                   onTap: () {
                     showModalBottomSheet(
@@ -115,6 +123,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   buttonText: "Değişiklikleri Kaydet",
                   onPressed: () {
                     _updateUserName(context);
+                    _updateProfilePhoto(context);
                   },
                 ),
               )
@@ -165,16 +174,31 @@ class _ProfilePageState extends State<ProfilePage> {
           mainButtonTitle: "Tamam",
         ).show(context);
       }
-    } else {
-      const CrossPlatformAlertDialog(
-        title: "Hata",
-        content: "Kullanıcı adı değişikliği yapmadınız",
-        mainButtonTitle: "Tamam",
-      ).show(context);
     }
   }
 
-  void _useDeviceGallery() {}
+  Future<void> _useDeviceGallery() async {
+    var newImage = await _picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _profilePhoto = newImage;
+      Navigator.of(context).pop();
+    });
+  }
 
-  void _useDeviceCamera() {}
+  Future<void> _useDeviceCamera() async {
+    var newImage = await _picker.pickImage(source: ImageSource.camera);
+    setState(() {
+      _profilePhoto = newImage;
+      Navigator.of(context).pop();
+    });
+  }
+
+  Future<void> _updateProfilePhoto(BuildContext context) async {
+    final _userViewModel = Provider.of<UserViewModel>(context, listen: false);
+    File fileProfilePhoto = File(_profilePhoto!.path);
+    if (_profilePhoto != null) {
+      await _userViewModel.uploadFile(
+          _userViewModel.user!.userID, "profile_photo", fileProfilePhoto);
+    }
+  }
 }
