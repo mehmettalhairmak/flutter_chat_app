@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/viewmodel/user_view_model.dart';
-import 'package:flutter_chat_app/widgets/cross_platform_notification.dart';
-import 'package:flutter_chat_app/widgets/social_login_button.dart';
+import 'package:flutter_chat_app/app/widgets/cross_platform_notification.dart';
+import 'package:flutter_chat_app/app/widgets/social_login_button.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 

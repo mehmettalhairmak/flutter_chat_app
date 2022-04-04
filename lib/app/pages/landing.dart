@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_app/pages/home.dart';
-import 'package:flutter_chat_app/pages/sign_in/sign_in.dart';
+import 'package:flutter_chat_app/app/pages/home.dart';
+import 'package:flutter_chat_app/app/pages/sign_in/sign_in.dart';
 import 'package:flutter_chat_app/viewmodel/user_view_model.dart';
 import 'package:provider/provider.dart';
 

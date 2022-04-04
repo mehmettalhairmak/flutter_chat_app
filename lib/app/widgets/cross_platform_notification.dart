@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_chat_app/widgets/cross_platform_widget.dart';
+import 'package:flutter_chat_app/app/widgets/cross_platform_widget.dart';
 
 class CrossPlatformAlertDialog extends CrossPlatformWidget {
   final String title;

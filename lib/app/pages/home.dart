@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/items/tab_item.dart';
 import 'package:flutter_chat_app/models/user_model.dart';
-import 'package:flutter_chat_app/pages/profile.dart';
-import 'package:flutter_chat_app/pages/users.dart';
-import 'package:flutter_chat_app/widgets/custom_bottom_navigation.dart';
+import 'package:flutter_chat_app/app/pages/profile.dart';
+import 'package:flutter_chat_app/app/pages/users.dart';
+import 'package:flutter_chat_app/app/widgets/custom_bottom_navigation.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatefulWidget {
