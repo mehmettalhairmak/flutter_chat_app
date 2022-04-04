@@ -26,7 +26,7 @@ class FirestoreDBService implements DBBase {
         await _firestore.collection('users').doc(userID).get();
 
     Map<String, dynamic> _readingUserDetailsMap =
-        _readingUser.data() as Map<String, dynamic>;
+         _readingUser.data() as Map<String, dynamic>;
 
     UserModel _readingUserObject = UserModel.fromMap(_readingUserDetailsMap);
 
