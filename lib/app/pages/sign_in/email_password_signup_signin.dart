@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/models/user_model.dart';
 import 'package:flutter_chat_app/app/pages/sign_in/error_exception.dart';
-import 'package:flutter_chat_app/viewmodel/user_view_model.dart';
+import 'package:flutter_chat_app/viewmodel/view_model.dart';
 import 'package:flutter_chat_app/app/widgets/cross_platform_notification.dart';
 import 'package:flutter_chat_app/app/widgets/social_login_button.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +32,7 @@ class _EmailPasswordLoginPageState extends State<EmailPasswordLoginPage> {
         ? "Hesabınız Yok Mu? Kayıt Olun"
         : "Hesabınız Var Mı? O Zaman Giriş Yapın";
 
-    final _userViewModel = Provider.of<UserViewModel>(context);
+    final _userViewModel = Provider.of<ViewModel>(context);
 
     if (_userViewModel.user != null) {
       Future.delayed(const Duration(milliseconds: 300), () {
@@ -106,7 +106,7 @@ class _EmailPasswordLoginPageState extends State<EmailPasswordLoginPage> {
   void formSubmit() async {
     _formKey.currentState?.save();
     debugPrint("Email : $_email\nŞifre : $_password");
-    final _userModel = Provider.of<UserViewModel>(context, listen: false);
+    final _userModel = Provider.of<ViewModel>(context, listen: false);
 
     if (_formType == FormType.LOGIN) {
       try {

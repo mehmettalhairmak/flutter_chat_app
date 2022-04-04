@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_app/viewmodel/user_view_model.dart';
+import 'package:flutter_chat_app/viewmodel/view_model.dart';
 import 'package:flutter_chat_app/app/widgets/cross_platform_notification.dart';
 import 'package:flutter_chat_app/app/widgets/social_login_button.dart';
 import 'package:image_picker/image_picker.dart';
@@ -34,8 +34,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    UserViewModel _userViewModel =
-        Provider.of<UserViewModel>(context, listen: false);
+    ViewModel _userViewModel = Provider.of<ViewModel>(context, listen: false);
     _controllerUserName.text = _userViewModel.user!.userName!;
     return Scaffold(
       appBar: AppBar(
@@ -135,7 +134,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<bool> signOut(BuildContext context) async {
-    final _userViewModel = Provider.of<UserViewModel>(context, listen: false);
+    final _userViewModel = Provider.of<ViewModel>(context, listen: false);
     bool value = await _userViewModel.signOut();
     return value;
   }
@@ -154,7 +153,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _updateUserName(BuildContext context) async {
-    final _userViewModel = Provider.of<UserViewModel>(context, listen: false);
+    final _userViewModel = Provider.of<ViewModel>(context, listen: false);
     if (_userViewModel.user!.userName != _controllerUserName.text) {
       var _updateResult = await _userViewModel.updateUserName(
           _userViewModel.user!.userID, _controllerUserName.text);
@@ -194,11 +193,18 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _updateProfilePhoto(BuildContext context) async {
-    final _userViewModel = Provider.of<UserViewModel>(context, listen: false);
+    final _userViewModel = Provider.of<ViewModel>(context, listen: false);
     File fileProfilePhoto = File(_profilePhoto!.path);
     if (_profilePhoto != null) {
-      await _userViewModel.uploadFile(
+      String url = await _userViewModel.uploadFile(
           _userViewModel.user!.userID, "profile_photo", fileProfilePhoto);
+      if (url != null) {
+        const CrossPlatformAlertDialog(
+          title: "Başarılı",
+          content: "Profil resminiz başarıyla güncellendi",
+          mainButtonTitle: "Tamam",
+        ).show(context);
+      }
     }
   }
 }

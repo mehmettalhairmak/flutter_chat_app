@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/models/user_model.dart';
 import 'package:flutter_chat_app/app/pages/sign_in/email_password_signup_signin.dart';
-import 'package:flutter_chat_app/viewmodel/user_view_model.dart';
+import 'package:flutter_chat_app/viewmodel/view_model.dart';
 import 'package:flutter_chat_app/app/widgets/social_login_button.dart';
 import 'package:provider/provider.dart';
 
@@ -73,13 +73,13 @@ class SignInPage extends StatelessWidget {
   } */
 
   void signInWithGoogle(BuildContext context) async {
-    final _userViewModel = Provider.of<UserViewModel>(context, listen: false);
+    final _userViewModel = Provider.of<ViewModel>(context, listen: false);
     UserModel? _user = await _userViewModel.signInWithGoogle();
     debugPrint('Oturum Açan User ID : ${_user?.userID.toString()}');
   }
 
   void signInWithFacebook(BuildContext context) async {
-    final _userViewModel = Provider.of<UserViewModel>(context, listen: false);
+    final _userViewModel = Provider.of<ViewModel>(context, listen: false);
     UserModel? _user = await _userViewModel.signInWithFacebook();
     debugPrint('Oturum Açan User ID : ${_user?.userID.toString()}');
   }

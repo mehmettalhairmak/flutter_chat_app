@@ -51,11 +51,31 @@ class FirestoreDBService implements DBBase {
     }
   }
 
+  @override
   Future<bool> updatePhotoURL(String userID, String profilePhotoURL) async {
     await _firestore
         .collection("users")
         .doc(userID)
         .update({"profileURL": profilePhotoURL});
     return true;
+  }
+
+  @override
+  Future<List<UserModel>> getAllUser() async {
+    QuerySnapshot querySnapshot = await _firestore.collection("users").get();
+
+    List<UserModel> allUser = [];
+    /*for (DocumentSnapshot document in querySnapshot.docs) {
+      UserModel _user =
+          UserModel.fromMap(document.data() as Map<String, dynamic>);
+      allUser.add(_user);
+    }*/
+
+    //2. Yöntem
+
+    allUser = querySnapshot.docs
+        .map((e) => UserModel.fromMap(e.data() as Map<String, dynamic>))
+        .toList();
+    return allUser;
   }
 }

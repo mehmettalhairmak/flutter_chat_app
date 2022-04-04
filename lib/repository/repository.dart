@@ -1,7 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
 import 'dart:io';
-
 import 'package:flutter_chat_app/models/user_model.dart';
 import 'package:flutter_chat_app/services/authentication/auth_base.dart';
 import 'package:flutter_chat_app/services/authentication/fake_auth.dart';
@@ -12,7 +11,7 @@ import '../locator.dart';
 
 enum AppMode { DEBUG, RELEASE }
 
-class UserRepository implements AuthBase {
+class Repository implements AuthBase {
   final FirebaseAuthService _firebaseAuthService =
       locator<FirebaseAuthService>();
 
@@ -134,6 +133,16 @@ class UserRepository implements AuthBase {
       await _firestoreDBService.updatePhotoURL(userID, profilePhotoURL);
 
       return profilePhotoURL;
+    }
+  }
+
+  Future<List<UserModel>> getAllUser() async {
+    if (appMode == AppMode.DEBUG) {
+      return [];
+    } else {
+      var allUserList = await _firestoreDBService.getAllUser();
+
+      return allUserList;
     }
   }
 }

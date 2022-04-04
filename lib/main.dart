@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/locator.dart';
 import 'package:flutter_chat_app/app/pages/landing.dart';
-import 'package:flutter_chat_app/viewmodel/user_view_model.dart';
+import 'package:flutter_chat_app/viewmodel/view_model.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (BuildContext context) => UserViewModel(),
+      create: (BuildContext context) => ViewModel(),
       child: MaterialApp(
         title: "Flutter Chat App",
         debugShowCheckedModeBanner: false,

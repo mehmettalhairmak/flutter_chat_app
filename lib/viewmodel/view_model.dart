@@ -1,19 +1,18 @@
 // ignore_for_file: constant_identifier_names
 
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/locator.dart';
 import 'package:flutter_chat_app/models/user_model.dart';
-import 'package:flutter_chat_app/repository/user_repository.dart';
+import 'package:flutter_chat_app/repository/repository.dart';
 import 'package:flutter_chat_app/services/authentication/auth_base.dart';
 
 enum ViewState { IDLE, BUSY }
 
-class UserViewModel with ChangeNotifier implements AuthBase {
+class ViewModel with ChangeNotifier implements AuthBase {
   ViewState _viewState = ViewState.IDLE;
 
-  final UserRepository _userRepository = locator<UserRepository>();
+  final Repository _userRepository = locator<Repository>();
   // ignore: unused_field
   UserModel? _user;
   String? emailErrorMessage;
@@ -28,7 +27,7 @@ class UserViewModel with ChangeNotifier implements AuthBase {
     notifyListeners();
   }
 
-  UserViewModel() {
+  ViewModel() {
     currentUser();
   }
 
@@ -171,5 +170,10 @@ class UserViewModel with ChangeNotifier implements AuthBase {
     var downloadURL =
         await _userRepository.uploadFile(userID, fileType, profilePhoto);
     return downloadURL;
+  }
+
+  Future<List<UserModel>> getAllUser()async{
+    var allUserList=await _userRepository.getAllUser();
+    return allUserList;
   }
 }

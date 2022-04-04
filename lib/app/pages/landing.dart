@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/app/pages/home.dart';
 import 'package:flutter_chat_app/app/pages/sign_in/sign_in.dart';
-import 'package:flutter_chat_app/viewmodel/user_view_model.dart';
+import 'package:flutter_chat_app/viewmodel/view_model.dart';
 import 'package:provider/provider.dart';
 
 class LangingPage extends StatelessWidget {
@@ -9,13 +9,13 @@ class LangingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _userViewModel = Provider.of<UserViewModel>(context);
+    final _viewModel = Provider.of<ViewModel>(context);
 
-    if (_userViewModel.viewState == ViewState.IDLE) {
-      if (_userViewModel.user == null) {
+    if (_viewModel.viewState == ViewState.IDLE) {
+      if (_viewModel.user == null) {
         return const SignInPage();
       } else {
-        return HomePage(user: _userViewModel.user);
+        return HomePage(user: _viewModel.user);
       }
     } else {
       return const Scaffold(
