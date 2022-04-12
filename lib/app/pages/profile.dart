@@ -198,7 +198,7 @@ class _ProfilePageState extends State<ProfilePage> {
     if (_profilePhoto != null) {
       String url = await _userViewModel.uploadFile(
           _userViewModel.user!.userID, "profile_photo", fileProfilePhoto);
-      if (url != null) {
+      if (url != "") {
         const CrossPlatformAlertDialog(
           title: "Başarılı",
           content: "Profil resminiz başarıyla güncellendi",

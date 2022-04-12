@@ -3,6 +3,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/locator.dart';
+import 'package:flutter_chat_app/models/message_model.dart';
 import 'package:flutter_chat_app/models/user_model.dart';
 import 'package:flutter_chat_app/repository/repository.dart';
 import 'package:flutter_chat_app/services/authentication/auth_base.dart';
@@ -172,8 +173,16 @@ class ViewModel with ChangeNotifier implements AuthBase {
     return downloadURL;
   }
 
-  Future<List<UserModel>> getAllUser()async{
-    var allUserList=await _userRepository.getAllUser();
+  Future<List<UserModel>> getAllUser() async {
+    var allUserList = await _userRepository.getAllUser();
     return allUserList;
+  }
+
+  Stream<List<Message>> getMessages(String currentUserID, String chatUserID) {
+    return _userRepository.getMessages(currentUserID, chatUserID);
+  }
+
+  Future<bool> saveMessage(Message saveMessage) {
+    return _userRepository.saveMessage(saveMessage);
   }
 }

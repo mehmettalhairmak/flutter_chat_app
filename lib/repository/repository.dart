@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 import 'dart:io';
+import 'package:flutter_chat_app/models/message_model.dart';
 import 'package:flutter_chat_app/models/user_model.dart';
 import 'package:flutter_chat_app/services/authentication/auth_base.dart';
 import 'package:flutter_chat_app/services/authentication/fake_auth.dart';
@@ -143,6 +144,22 @@ class Repository implements AuthBase {
       var allUserList = await _firestoreDBService.getAllUser();
 
       return allUserList;
+    }
+  }
+
+  Stream<List<Message>> getMessages(String currentUserID, String chatUserID) {
+    if (appMode == AppMode.DEBUG) {
+      return const Stream.empty();
+    } else {
+      return _firestoreDBService.getMessages(currentUserID, chatUserID);
+    }
+  }
+
+  Future<bool> saveMessage(Message saveMessage) async{
+    if (appMode == AppMode.DEBUG) {
+      return true;
+    } else {
+      return _firestoreDBService.saveMessage(saveMessage);
     }
   }
 }

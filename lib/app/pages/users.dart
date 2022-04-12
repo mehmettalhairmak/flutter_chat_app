@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_app/app/pages/chat.dart';
 import 'package:flutter_chat_app/models/user_model.dart';
 import 'package:flutter_chat_app/viewmodel/view_model.dart';
 import 'package:provider/provider.dart';
@@ -31,12 +32,24 @@ class UsersPage extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   var currentUser = snapshot.data![index];
                   if (currentUser.userID != _viewModel.user!.userID) {
-                    return ListTile(
-                      title: Text(currentUser.userName!),
-                      subtitle: Text(currentUser.email),
-                      leading: CircleAvatar(
-                        backgroundImage: NetworkImage(currentUser.profileURL!),
+                    return GestureDetector(
+                      child: ListTile(
+                        title: Text(currentUser.userName!),
+                        subtitle: Text(currentUser.email),
+                        leading: CircleAvatar(
+                          backgroundImage:
+                              NetworkImage(currentUser.profileURL!),
+                        ),
                       ),
+                      onTap: () {
+                        Navigator.of(context, rootNavigator: true)
+                            .push(MaterialPageRoute(
+                          builder: ((context) => ChatPage(
+                                currentUser: _viewModel.user!,
+                                chatUser: currentUser,
+                              )),
+                        ));
+                      },
                     );
                   } else {
                     return Container();

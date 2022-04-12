@@ -18,7 +18,7 @@ class UserModel {
       'email': email,
       'userName': userName ??
           email.substring(0, email.indexOf('@')) + createRandomNumber(),
-      'profileURL': profileURL ?? '',
+      'profileURL': profileURL ?? "",
       'createdAt': createdAt ?? FieldValue.serverTimestamp(),
       'updatedAt': updatedAt ?? FieldValue.serverTimestamp(),
       'seviye': seviye ?? 1

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_chat_app/models/message_model.dart';
 import 'package:flutter_chat_app/models/user_model.dart';
 import 'package:flutter_chat_app/services/database/db_base.dart';
 
@@ -77,5 +78,44 @@ class FirestoreDBService implements DBBase {
         .map((e) => UserModel.fromMap(e.data() as Map<String, dynamic>))
         .toList();
     return allUser;
+  }
+
+  @override
+  Stream<List<Message>> getMessages(String currentUserID, String chatUserID) {
+    var snapshot = _firestore
+        .collection("chat")
+        .doc(currentUserID + "--" + chatUserID)
+        .collection("messages")
+        .orderBy("date", descending: true)
+        .snapshots();
+    return snapshot.map((messageList) => messageList.docs
+        .map((message) => Message.fromMap(message.data()))
+        .toList());
+  }
+
+  @override
+  Future<bool> saveMessage(Message saveMessage) async {
+    var _messageID = _firestore.collection("chat").doc().id;
+    var _myDocumentID = saveMessage.fromWho + "--" + saveMessage.toWho;
+    var _receiverDocumentID = saveMessage.toWho + "--" + saveMessage.fromWho;
+    var _saveMessageMap = saveMessage.toMap();
+
+    await _firestore
+        .collection("chat")
+        .doc(_myDocumentID)
+        .collection("messages")
+        .doc(_messageID)
+        .set(_saveMessageMap);
+
+    _saveMessageMap.update("isFromMe", (value) => false);
+
+    await _firestore
+        .collection("chat")
+        .doc(_receiverDocumentID)
+        .collection("messages")
+        .doc(_messageID)
+        .set(_saveMessageMap);
+
+    return true;
   }
 }
