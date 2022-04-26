@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/locator.dart';
 import 'package:flutter_chat_app/models/message_model.dart';
+import 'package:flutter_chat_app/models/speech_model.dart';
 import 'package:flutter_chat_app/models/user_model.dart';
 import 'package:flutter_chat_app/repository/repository.dart';
 import 'package:flutter_chat_app/services/authentication/auth_base.dart';
@@ -14,13 +15,11 @@ class ViewModel with ChangeNotifier implements AuthBase {
   ViewState _viewState = ViewState.IDLE;
 
   final Repository _userRepository = locator<Repository>();
-  // ignore: unused_field
+
   UserModel? _user;
   String? emailErrorMessage;
   String? passwordErrorMessage;
-
   UserModel? get user => _user;
-
   ViewState get viewState => _viewState;
 
   set viewState(ViewState value) {
@@ -184,5 +183,9 @@ class ViewModel with ChangeNotifier implements AuthBase {
 
   Future<bool> saveMessage(Message saveMessage) {
     return _userRepository.saveMessage(saveMessage);
+  }
+
+  Future<List<Speech>> getAllConversations(String userID) async {
+    return await _userRepository.getAllConversations(userID);
   }
 }

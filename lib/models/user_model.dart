@@ -2,8 +2,8 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
-  final String userID;
-  String email;
+  String userID;
+  String? email;
   String? userName;
   String? profileURL;
   DateTime? createdAt;
@@ -17,7 +17,7 @@ class UserModel {
       'userID': userID,
       'email': email,
       'userName': userName ??
-          email.substring(0, email.indexOf('@')) + createRandomNumber(),
+          email!.substring(0, email!.indexOf('@')) + createRandomNumber(),
       'profileURL': profileURL ?? "",
       'createdAt': createdAt ?? FieldValue.serverTimestamp(),
       'updatedAt': updatedAt ?? FieldValue.serverTimestamp(),
@@ -33,6 +33,8 @@ class UserModel {
         createdAt = (map['createdAt'] as Timestamp).toDate(),
         updatedAt = (map['updatedAt'] as Timestamp).toDate(),
         seviye = map['seviye'];
+
+  UserModel.idAndPicture({required this.userID, required this.profileURL});
 
   String createRandomNumber() {
     int randomNumber = Random().nextInt(999999);

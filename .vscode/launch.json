@@ -28,6 +28,12 @@
             "deviceId": "R68RA00FVKA"
         },
         {
+            "name": "Emulator",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "emulator-5554"
+        },
+        {
             "name": "Chrome",
             "request": "launch",
             "type": "dart",
@@ -41,6 +47,10 @@
         }
     ],
     "compounds": [
+        {
+            "name": "SM M317F - Emulator",
+            "configurations": ["SM M317F","Emulator"]
+        },
         {
             "name": "SM M317F - Windows",
             "configurations": ["SM M317F","Windows"]

@@ -25,6 +25,7 @@ class _EmailPasswordLoginPageState extends State<EmailPasswordLoginPage> {
   late String _buttonText, _linkText;
   var _formType = FormType.LOGIN;
   final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     _buttonText = _formType == FormType.LOGIN ? "Giriş Yap" : "Kayıt Ol";

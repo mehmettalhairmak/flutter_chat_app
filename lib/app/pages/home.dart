@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_app/app/pages/my_chat.dart';
 import 'package:flutter_chat_app/items/tab_item.dart';
 import 'package:flutter_chat_app/models/user_model.dart';
 import 'package:flutter_chat_app/app/pages/profile.dart';
@@ -20,12 +21,14 @@ class _HomePageState extends State<HomePage> {
 
   Map<TabItem, GlobalKey<NavigatorState>> navigatorKeys = {
     TabItem.Users: GlobalKey<NavigatorState>(),
-    TabItem.Profile: GlobalKey<NavigatorState>(),
+    TabItem.MyChat: GlobalKey<NavigatorState>(),
+    TabItem.Profile: GlobalKey<NavigatorState>()
   };
 
   Map<TabItem, Widget> allPages() {
     return {
       TabItem.Users: const UsersPage(),
+      TabItem.MyChat: const MyChatPage(),
       TabItem.Profile: const ProfilePage()
     };
   }

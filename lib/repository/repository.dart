@@ -2,6 +2,7 @@
 
 import 'dart:io';
 import 'package:flutter_chat_app/models/message_model.dart';
+import 'package:flutter_chat_app/models/speech_model.dart';
 import 'package:flutter_chat_app/models/user_model.dart';
 import 'package:flutter_chat_app/services/authentication/auth_base.dart';
 import 'package:flutter_chat_app/services/authentication/fake_auth.dart';
@@ -23,6 +24,8 @@ class Repository implements AuthBase {
 
   final FirebaseStorageService _firestoreStorageService =
       locator<FirebaseStorageService>();
+
+  List<UserModel> allUserList = [];
 
   AppMode appMode = AppMode.RELEASE;
 
@@ -141,7 +144,7 @@ class Repository implements AuthBase {
     if (appMode == AppMode.DEBUG) {
       return [];
     } else {
-      var allUserList = await _firestoreDBService.getAllUser();
+      allUserList = await _firestoreDBService.getAllUser();
 
       return allUserList;
     }
@@ -155,11 +158,46 @@ class Repository implements AuthBase {
     }
   }
 
-  Future<bool> saveMessage(Message saveMessage) async{
+  Future<bool> saveMessage(Message saveMessage) async {
     if (appMode == AppMode.DEBUG) {
       return true;
     } else {
       return _firestoreDBService.saveMessage(saveMessage);
     }
+  }
+
+  Future<List<Speech>> getAllConversations(String userID) async {
+    if (appMode == AppMode.DEBUG) {
+      return [];
+    } else {
+      var speechList = await _firestoreDBService.getAllConverstaions(userID);
+
+      for (var thisChat in speechList) {
+        var userListThisUser = listFindUser(thisChat.toWho);
+
+        if (userListThisUser != null) {
+          print("VERİLER CACHE'DEN OKUNDU");
+          thisChat.toWhoUserName = userListThisUser.userName;
+          thisChat.toWhoUserProfileURL = userListThisUser.profileURL;
+        } else {
+          print("VERİLER DATABASE'DEN OKUDNU");
+          print("Aranan user daha öncesinde veritabanına getirilmemiştir. ");
+          var _databaseReadUser =
+              await _firestoreDBService.readUser(thisChat.toWho);
+          thisChat.toWhoUserName = _databaseReadUser.userName;
+          thisChat.toWhoUserProfileURL = _databaseReadUser.profileURL;
+        }
+      }
+      return speechList;
+    }
+  }
+
+  UserModel? listFindUser(String userID) {
+    for (var i = 0; i < allUserList.length; i++) {
+      if (allUserList[i].userID == userID) {
+        return allUserList[i];
+      }
+    }
+    return null;
   }
 }

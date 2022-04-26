@@ -1,7 +1,9 @@
+import 'package:cloud_firestore_platform_interface/src/timestamp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/models/message_model.dart';
 import 'package:flutter_chat_app/models/user_model.dart';
 import 'package:flutter_chat_app/viewmodel/view_model.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ChatPage extends StatefulWidget {
@@ -118,55 +120,81 @@ class _ChatPageState extends State<ChatPage> {
   Widget _createTextBalloon(Message message) {
     Color _getMessageColor = Colors.blue;
     Color _sendMessageColor = Theme.of(context).primaryColor;
-
+    var _timeValue = "";
     var isMyMessage = message.isFromMe;
+
+    try {
+      _timeValue = _showHourMinute(message.date ?? Timestamp(1, 1));
+    } catch (e) {
+      debugPrint("Hata Var : $e");
+    }
 
     if (isMyMessage) {
       return Padding(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8), 
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
-                color: _sendMessageColor,
-              ),
-              padding: const EdgeInsets.all(10),
-              margin: const EdgeInsets.all(4),
-              child: Text(
-                message.message,
-                style: const TextStyle(color: Colors.white),
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Flexible(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: _sendMessageColor,
+                    ),
+                    padding: const EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(4),
+                    child: Text(
+                      message.message,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+                Text(_timeValue)
+              ],
             )
           ],
         ),
       );
     } else {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              CircleAvatar(
-                backgroundImage: NetworkImage(widget.chatUser.profileURL!),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6),
-                  color: _getMessageColor,
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                CircleAvatar(
+                  backgroundImage: NetworkImage(widget.chatUser.profileURL!),
                 ),
-                padding: const EdgeInsets.all(10),
-                margin: const EdgeInsets.all(4),
-                child: Text(
-                  message.message,
-                  style: const TextStyle(color: Colors.white),
+                Flexible(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: _getMessageColor,
+                    ),
+                    padding: const EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(4),
+                    child: Text(
+                      message.message,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
                 ),
-              )
-            ],
-          )
-        ],
+                Text(_timeValue)
+              ],
+            )
+          ],
+        ),
       );
     }
+  }
+
+  String _showHourMinute(Timestamp? date) {
+    var _formatter = DateFormat.Hm();
+    var _formatDate = _formatter.format(date!.toDate());
+    return _formatDate;
   }
 }

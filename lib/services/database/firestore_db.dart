@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_chat_app/models/message_model.dart';
+import 'package:flutter_chat_app/models/speech_model.dart';
 import 'package:flutter_chat_app/models/user_model.dart';
 import 'package:flutter_chat_app/services/database/db_base.dart';
 
@@ -107,6 +108,14 @@ class FirestoreDBService implements DBBase {
         .doc(_messageID)
         .set(_saveMessageMap);
 
+    await _firestore.collection("chat").doc(_myDocumentID).set({
+      "fromWho": saveMessage.fromWho,
+      "toWho": saveMessage.toWho,
+      "lastMessage": saveMessage.message,
+      "isSeen": false,
+      "createdDate": FieldValue.serverTimestamp()
+    });
+
     _saveMessageMap.update("isFromMe", (value) => false);
 
     await _firestore
@@ -116,6 +125,33 @@ class FirestoreDBService implements DBBase {
         .doc(_messageID)
         .set(_saveMessageMap);
 
+    await _firestore.collection("chat").doc(_receiverDocumentID).set({
+      "fromWho": saveMessage.toWho,
+      "toWho": saveMessage.fromWho,
+      "lastMessage": saveMessage.message,
+      "isSeen": false,
+      "createdDate": FieldValue.serverTimestamp()
+    });
+
     return true;
+  }
+
+  @override
+  Future<List<Speech>> getAllConverstaions(String userID) async {
+    QuerySnapshot querySnapshot = await _firestore
+        .collection("chat")
+        .where("fromWho", isEqualTo: userID)
+        .orderBy("createdDate", descending: true)
+        .get();
+
+    List<Speech> allSpeech = [];
+
+    for (DocumentSnapshot singleSpeech in querySnapshot.docs) {
+      Speech _singleSpeech =
+          Speech.fromMap(singleSpeech.data() as Map<String, dynamic>);
+      allSpeech.add(_singleSpeech);
+    }
+
+    return allSpeech;
   }
 }

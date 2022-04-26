@@ -51,7 +51,7 @@ class SignInPage extends StatelessWidget {
               ),
               onPressed: () => signInWithEmailPassword(context),
             ),
-            /* SocialLoginButton(
+             SocialLoginButton(
               buttonText: "Misafir Girişi",
               buttonColor: Colors.teal,
               buttonIcon: const Icon(
@@ -59,18 +59,18 @@ class SignInPage extends StatelessWidget {
                 size: 32,
               ),
               onPressed: () => anonymousLogin(context),
-            ) */
+            ) 
           ],
         ),
       ),
     );
   }
 
-  /* void anonymousLogin(BuildContext context) async {
-    final _userViewModel = Provider.of<UserViewModel>(context, listen: false);
+   void anonymousLogin(BuildContext context) async {
+    final _userViewModel = Provider.of<ViewModel>(context, listen: false);
     UserModel? _user = await _userViewModel.signInAnonymously();
     debugPrint('Oturum Açan User ID : ${_user?.userID.toString()}');
-  } */
+  } 
 
   void signInWithGoogle(BuildContext context) async {
     final _userViewModel = Provider.of<ViewModel>(context, listen: false);
