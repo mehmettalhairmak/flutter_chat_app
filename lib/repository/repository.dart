@@ -10,6 +10,7 @@ import 'package:flutter_chat_app/services/authentication/firebase_auth.dart';
 import 'package:flutter_chat_app/services/database/firestore_db.dart';
 import 'package:flutter_chat_app/services/storage/firebase_storage.dart';
 import '../locator.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 enum AppMode { DEBUG, RELEASE }
 
@@ -170,6 +171,8 @@ class Repository implements AuthBase {
     if (appMode == AppMode.DEBUG) {
       return [];
     } else {
+      DateTime _time = await _firestoreDBService.showTime(userID);
+
       var speechList = await _firestoreDBService.getAllConverstaions(userID);
 
       for (var thisChat in speechList) {
@@ -187,6 +190,7 @@ class Repository implements AuthBase {
           thisChat.toWhoUserName = _databaseReadUser.userName;
           thisChat.toWhoUserProfileURL = _databaseReadUser.profileURL;
         }
+        timestampCalculate(thisChat, _time);
       }
       return speechList;
     }
@@ -199,5 +203,12 @@ class Repository implements AuthBase {
       }
     }
     return null;
+  }
+
+  timestampCalculate(Speech thisChat, DateTime _time) {
+    thisChat.lastReadTime = _time;
+    var _duration = _time.difference(thisChat.createdDate!.toDate());
+    thisChat.localTime =
+        timeago.format(_time.subtract(_duration), locale: "tr");
   }
 }

@@ -11,4 +11,5 @@ abstract class DBBase {
   Future<List<Speech>> getAllConverstaions(String userID);
   Stream<List<Message>> getMessages(String currentUserID, String chatUserID);
   Future<bool> saveMessage(Message saveMessage);
+  Future<DateTime> showTime(String userID);
 }

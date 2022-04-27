@@ -154,4 +154,16 @@ class FirestoreDBService implements DBBase {
 
     return allSpeech;
   }
+
+  @override
+  Future<DateTime> showTime(String userID) async {
+    await _firestore.collection("server").doc(userID).set({
+      "time": FieldValue.serverTimestamp(),
+    });
+
+    var readMap = await _firestore.collection("server").doc(userID).get();
+    var readDate = readMap.data();
+    Timestamp timeDate = readDate!["time"];
+    return timeDate.toDate();
+  }
 }

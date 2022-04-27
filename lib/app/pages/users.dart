@@ -59,7 +59,32 @@ class _UsersPageState extends State<UsersPage> {
                   },
                 );
               } else {
-                return const Center(child: Text("Kayıtlı bir kullanıcı yok"));
+                return RefreshIndicator(
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height - 150,
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.supervised_user_circle,
+                              color: Theme.of(context).primaryColor,
+                              size: 120,
+                            ),
+                            const Text(
+                              "Henüz Kayıtlı Kullanıcı Yok",
+                              style: TextStyle(fontSize: 24),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  onRefresh: _userListRefresh,
+                );
               }
             } else {
               return const Center(child: CircularProgressIndicator());

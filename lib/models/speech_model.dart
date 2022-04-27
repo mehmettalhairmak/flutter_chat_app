@@ -9,6 +9,8 @@ class Speech {
   final Timestamp? seenDate;
   String? toWhoUserName;
   String? toWhoUserProfileURL;
+  DateTime? lastReadTime;
+  String? localTime;
 
   Speech({
     required this.fromWho,

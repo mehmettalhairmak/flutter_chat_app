@@ -30,38 +30,66 @@ class _MyChatPageState extends State<MyChatPage> {
             );
           } else {
             var allSpeech = speechList.data;
-
-            return RefreshIndicator(
-              onRefresh: _myChatListRefresh,
-              child: ListView.builder(
-                itemCount: allSpeech!.length,
-                itemBuilder: (BuildContext context, int index) {
-                  var speech = allSpeech[index];
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.of(context, rootNavigator: true)
-                          .push(MaterialPageRoute(
-                        builder: ((context) => ChatPage(
-                              currentUser: _viewModel.user!,
-                              chatUser: UserModel.idAndPicture(
-                                userID: speech.toWho,
-                                profileURL: speech.toWhoUserProfileURL,
-                              ),
-                            )),
-                      ));
-                    },
-                    child: ListTile(
-                      title: Text(speech.toWhoUserName!),
-                      subtitle: Text(speech.lastMessage),
-                      leading: CircleAvatar(
-                        backgroundImage:
-                            NetworkImage(speech.toWhoUserProfileURL!),
+            if (allSpeech!.isNotEmpty) {
+              return RefreshIndicator(
+                onRefresh: _myChatListRefresh,
+                child: ListView.builder(
+                  itemCount: allSpeech.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    var speech = allSpeech[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context, rootNavigator: true)
+                            .push(MaterialPageRoute(
+                          builder: ((context) => ChatPage(
+                                currentUser: _viewModel.user!,
+                                chatUser: UserModel.idAndPicture(
+                                  userID: speech.toWho,
+                                  profileURL: speech.toWhoUserProfileURL,
+                                ),
+                              )),
+                        ));
+                      },
+                      child: ListTile(
+                        title: Text(speech.toWhoUserName!),
+                        subtitle: Text(speech.localTime.toString()),
+                        leading: CircleAvatar(
+                          backgroundImage:
+                              NetworkImage(speech.toWhoUserProfileURL!),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+            } else {
+              return RefreshIndicator(
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height - 150,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.chat,
+                            color: Theme.of(context).primaryColor,
+                            size: 120,
+                          ),
+                          const Text(
+                            "Henüz Geçmiş Konuşma Yok",
+                            style: TextStyle(fontSize: 24),
+                          )
+                        ],
                       ),
                     ),
-                  );
-                },
-              ),
-            );
+                  ),
+                ),
+                onRefresh: _myChatListRefresh,
+              );
+            }
           }
         },
       ),
