@@ -99,7 +99,7 @@ class FirestoreDBService implements DBBase {
     var _messageID = _firestore.collection("chat").doc().id;
     var _myDocumentID = saveMessage.fromWho + "--" + saveMessage.toWho;
     var _receiverDocumentID = saveMessage.toWho + "--" + saveMessage.fromWho;
-    var _saveMessageMap = saveMessage.toMap();
+    var _saveMessageMap = saveMessage.toMap(); 
 
     await _firestore
         .collection("chat")

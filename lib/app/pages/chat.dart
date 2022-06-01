@@ -1,3 +1,5 @@
+// ignore_for_file: implementation_imports
+
 import 'package:cloud_firestore_platform_interface/src/timestamp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/models/message_model.dart';
